@@ -22,6 +22,9 @@ public class RetrieveJSONTask extends AsyncTask<String, Void, JSONObject> {
     protected JSONObject doInBackground(String... urls) {
         JSONObject responseObj = new JSONObject();
         try {
+            if (urls.length > 1) {
+
+            }
             URL obj = new URL(urls[0]);
             try {
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();

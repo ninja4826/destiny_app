@@ -16,6 +16,7 @@ import org.json.JSONException;
 public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public Destiny destiny;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,13 +32,9 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 String userName = txtUserName.getText().toString();
                 String membershipType = spnMembershipType.getSelectedItem().toString();
-//                try {
-//                    Log.d(TAG, Endpoints.playerSearch(userName, membershipType).getJSONArray("Response").getJSONObject(0).getString("membershipId"));
-                    String membershipID = Endpoints.playerSearch(userName, membershipType);
-                    lblMembershipId.setText(membershipID);
-//                } catch (JSONException e) {
-//                    System.err.println("Caught JSONException: " + e.getMessage());
-//                }
+                destiny = new Destiny(userName, membershipType);
+                String membershipID = Endpoints.playerSearch(userName, membershipType);
+                lblMembershipId.setText(membershipID);
             }
         });
     }
