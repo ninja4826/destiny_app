@@ -7,9 +7,9 @@ import org.json.JSONObject;
  */
 public class Destiny {
     public Destiny(String userName) {
-        this(userName, 0);
+        this(userName, "All");
     }
-    public Destiny(String userName, int membershipType) {
+    public Destiny(String userName, String membershipType) {
 
     }
 }

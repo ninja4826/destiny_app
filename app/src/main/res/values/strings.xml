@@ -6,4 +6,10 @@
     <string name="action_settings">Settings</string>
     <string name="action_auth">Authenticate</string>
     <string name="action_char">Character</string>
+
+    <string-array name="spnMembershipType">
+        <item>All</item>
+        <item>PSN</item>
+        <item>Xbox</item>
+    </string-array>
 </resources>

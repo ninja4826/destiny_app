@@ -2,15 +2,44 @@ package com.hueske.destinymanager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.json.JSONException;
 
 public class MainActivity extends ActionBarActivity {
 
-    @Override
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final Button btnTest = (Button) findViewById(R.id.btnTest);
+        final EditText txtUserName = (EditText) findViewById(R.id.txtUserName);
+        final Spinner spnMembershipType = (Spinner) findViewById(R.id.spnMembershipType);
+        final TextView lblMembershipId = (TextView) findViewById(R.id.lblMembershipId);
+
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userName = txtUserName.getText().toString();
+                String membershipType = spnMembershipType.getSelectedItem().toString();
+//                try {
+//                    Log.d(TAG, Endpoints.playerSearch(userName, membershipType).getJSONArray("Response").getJSONObject(0).getString("membershipId"));
+                    String membershipID = Endpoints.playerSearch(userName, membershipType);
+                    lblMembershipId.setText(membershipID);
+//                } catch (JSONException e) {
+//                    System.err.println("Caught JSONException: " + e.getMessage());
+//                }
+            }
+        });
     }
 
     @Override

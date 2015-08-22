@@ -8,7 +8,14 @@ import com.android.volley.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by huesk on 8/21/2015.
@@ -17,38 +24,30 @@ public class Endpoints {
 
     private static String baseUrl = "https://www.bungie.net/Platform/Destiny/";
     private static String apiKey = "00047325d52041e5bd0ccaaa3702f3c2";
-
-    public static int playerSearch(String displayName, int membershipType) {
-        String url = baseUrl += ("SearchDestinyPlayer/"+membershipType+"/"+displayName+"/");
+    public static String playerSearch(String displayName, String membershipType) {
+        String url = baseUrl + "SearchDestinyPlayer/"+membershipType+"/"+displayName+"/";
 
         JSONObject response = execute(url);
-
-//      TODO: Replace return value with real value
-        return 0;
+        String responseString = "";
+        try {
+            responseString = response.getJSONArray("Response").getJSONObject(0).getString("membershipId");
+        } catch (JSONException e) {
+            System.err.println("Caught JSONException: " + e.getMessage());
+        }
+        return responseString;
     }
 
     private static JSONObject execute(String url) {
-        final JSONObject responseObj = new JSONObject();
-
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Iterator<String> keyIter = response.keys();
-                while (keyIter.hasNext()) {
-                    try {
-                        String key = keyIter.next();
-                        responseObj.put(key, response.get(key));
-                    } catch (JSONException e) {
-                        System.err.println("Caught JSONException: " + e.getMessage());
-                    }
-                }
+        JSONObject responseObj = new JSONObject();
+        try {
+            try {
+                responseObj = new RetrieveJSONTask().execute(url).get();
+            } catch (ExecutionException e) {
+                System.err.println("Caught ExecutionException: " + e.getMessage());
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//              TODO: Error-Handling
-            }
-        });
+        } catch (InterruptedException e) {
+            System.err.println("Caught InterruptedException: " + e.getMessage());
+        }
         return responseObj;
     }
 }
